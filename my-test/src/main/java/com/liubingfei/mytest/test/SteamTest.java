@@ -68,7 +68,7 @@ public class SteamTest {
     }
 
     /**
-     * 合计List
+     * 合计List：reduce
      */
     public void test4_2(){
         //带合计的数据集合
