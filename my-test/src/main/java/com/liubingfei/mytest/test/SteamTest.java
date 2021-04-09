@@ -2,9 +2,11 @@ package com.liubingfei.mytest.test;
 
 import com.liubingfei.mytest.model.ExcessiveOrganExport;
 import com.liubingfei.mytest.model.OverallUseStatisticsResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -142,8 +144,56 @@ public class SteamTest {
         System.out.println(def + "," +name);
     }
 
+    @Test
+    public void test11(){
+        String a = "a";
+        String b = "b";
+        List<String> list = new ArrayList<>();
+        list.add(a);
+        list.add(b);
+        String c = null;
+        if(list.contains(c)){
+            System.out.println("xxxxxxxxxxxxx");
+        }else{
+            System.out.println("yyyyyyyyyyyyy");
+        }
+        BigDecimal bigDecimal = BigDecimal.valueOf(100.100);
+        bigDecimal.toString();
+        System.out.println(bigDecimal.toString());
+        System.out.println(String.valueOf(bigDecimal));
 
+    }
 
+    /**
+     * 拼接字符串测试
+     */
+    @Test
+    public void test12(){
+        String a = "a";
+        String b = "b";
+        String c = null;
+        String d = "";
+        String e = "e";
+        String result1 = StringUtils.join(a,b);
+        String result2 = StringUtils.join(a,b,c);
+        String result3 = StringUtils.join(a,b,c,d);
+        String result4 = StringUtils.join(a,b,c,d,e);
+        System.out.println(result1);
+        System.out.println(result2);
+        System.out.println(result3);
+        System.out.println(result4);
+    }
 
+    @Test
+    public void test13(){
+        // redis 宕机时采用时间戳加随机数
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        Random random = new Random();
+        //14位时间戳到 + 6位随机数
+        timeStamp +=(random.nextInt(10)+"") + (random.nextInt(10)+"") + (random.nextInt(10)+"");
+        System.out.println(timeStamp);
+        timeStamp +=(random.nextInt(10)+"") + (random.nextInt(10)+"") + (random.nextInt(10)+"");
+        System.out.println(timeStamp);
+    }
 
 }

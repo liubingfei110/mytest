@@ -64,5 +64,20 @@ public class Calculate {
 
     }
 
+    @Test
+    public void test4(){
+        LocalDateTime now1 = LocalDateTime.now();
+        LocalDateTime now2 = now1.plusMinutes(1L);
+        int a = now1.compareTo(now2);
+        if(a >= 0){
+            System.out.println(1);
+        }else{
+            System.out.println(2);
+        }
+        System.out.println(a);
+
+
+    }
+
 
 }
