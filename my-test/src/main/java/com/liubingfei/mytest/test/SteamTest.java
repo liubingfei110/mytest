@@ -112,8 +112,20 @@ public class SteamTest {
         String str = "X100110021002,X100110021001,X100110021000,X10021002,X10021001,X10021000,X10011002,X10011001,X10011000,X1002,X1001,X1000,X";
         String[] array = str.split(",");
         List<String> list = new ArrayList<>(Arrays.asList(array));
+        //升序
         list.sort(String::compareTo);
         list.stream().forEach(a -> System.out.println("["+a+"]"));
+
+        //降序
+        List<Integer> numberList = new ArrayList<>(Arrays.asList(9, 2, 3, 4, 5));
+        //注意：o1 代表后面一个数 o2代表前面一个数
+        numberList.sort((o1, o2) -> {
+            if(o1.compareTo(o2) >= 0){
+                return -1;//-1表示交换两个数的位置 所以这里实现的是降序排列
+            }
+            return 1;
+        });
+        numberList.stream().forEach(a -> System.out.println("["+a+"]"));
     }
 
     /**
@@ -194,6 +206,23 @@ public class SteamTest {
         System.out.println(timeStamp);
         timeStamp +=(random.nextInt(10)+"") + (random.nextInt(10)+"") + (random.nextInt(10)+"");
         System.out.println(timeStamp);
+    }
+
+    /**
+     * 排序
+     */
+    @Test
+    public void test14(){
+        //降序
+        List<Integer> numberList = new ArrayList<>(Arrays.asList(9, 2, 3, 4, 5));
+        //注意：o1 代表后面一个数 o2代表前面一个数
+        numberList.sort((o1, o2) -> {
+            if(o1.compareTo(o2) >= 0){
+                return -1;//-1表示交换两个数的位置 所以这里实现的是降序排列
+            }
+            return 1;
+        });
+        numberList.stream().forEach(a -> System.out.println("["+a+"]"));
     }
 
 }
