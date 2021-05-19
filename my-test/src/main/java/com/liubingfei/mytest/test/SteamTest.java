@@ -2,6 +2,7 @@ package com.liubingfei.mytest.test;
 
 import com.liubingfei.mytest.model.ExcessiveOrganExport;
 import com.liubingfei.mytest.model.OverallUseStatisticsResponse;
+import com.liubingfei.mytest.model.SysResourcesResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
@@ -225,4 +226,46 @@ public class SteamTest {
         numberList.stream().forEach(a -> System.out.println("["+a+"]"));
     }
 
+    /**
+     * Set
+     */
+    @Test
+    public void test15(){
+        Set<String> set = new HashSet<>();
+        set.add("9");
+        set.add("2");
+        set.add("9");
+        set.add("6");
+        set.add("5");
+        set.add("5");
+        System.out.println(set.toString() + set.size());
+    }
+
+    @Test
+    public void test16(){
+        SysResourcesResponse sysResourcesResponse = new SysResourcesResponse();
+        sysResourcesResponse.setId("1a");
+        sysResourcesResponse.setChildren(new ArrayList<>(Arrays.asList(new SysResourcesResponse().setId("2a"), new SysResourcesResponse().setId("2b"))));
+        sysResourcesResponse.getChildren().get(0).setChildren(new ArrayList<>(Arrays.asList(new SysResourcesResponse().setId("3a"), new SysResourcesResponse().setId("3b"))));
+        System.out.println("1:" + sysResourcesResponse.toString());
+        removeNotFirstResources(sysResourcesResponse);
+        System.out.println("``````````````````````````````````````````````````");
+        System.out.println("2:" + sysResourcesResponse.toString());
+    }
+
+    public void removeNotFirstResources(SysResourcesResponse leftResource) {
+        List<SysResourcesResponse> childrenList = leftResource.getChildren();
+        if (Objects.isNull(childrenList) || childrenList.isEmpty() || childrenList.size() == 1) {
+            return;
+        }
+        //删除非第一个元素
+        for (int i = 0; i < childrenList.size(); i++) {
+            if (i != 0) {
+                childrenList.remove(i);
+                i--;
+            }
+        }
+        SysResourcesResponse first =  childrenList.get(0);
+        removeNotFirstResources(first);
+    }
 }

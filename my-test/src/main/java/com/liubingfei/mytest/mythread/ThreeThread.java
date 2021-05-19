@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
 public class ThreeThread implements Callable {
     @Override
     public Integer call() {
-        return null;
+        return 1;
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
