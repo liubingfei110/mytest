@@ -268,4 +268,23 @@ public class SteamTest {
         SysResourcesResponse first =  childrenList.get(0);
         removeNotFirstResources(first);
     }
+
+    @Test
+    public void test17(){
+        if("".contains("")){
+            System.out.println("空包含空");
+        }
+        if("123".contains("")){
+            System.out.println("字符串包含空");
+        }
+    }
+
+    @Test
+    public void test18(){
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(1,2,3,4,5));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(0,9,8));
+        list1.addAll(3,list2);
+        System.out.println(list1.toString());
+
+    }
 }
