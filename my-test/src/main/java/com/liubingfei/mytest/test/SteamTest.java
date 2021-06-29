@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -305,5 +306,14 @@ public class SteamTest {
 
         LocalDate endDate = start.plusMonths(1);
         System.out.println(endDate);
+    }
+
+    @Test
+    public  void localDateToString() {
+        LocalDate localDate = LocalDate.of(2021,12,28);
+        String format = "yyyy年MM月dd日";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
+        String dateStr = localDate.format(dateTimeFormatter);
+        System.out.println(dateStr);
     }
 }
