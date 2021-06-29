@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -286,5 +288,22 @@ public class SteamTest {
         list1.addAll(3,list2);
         System.out.println(list1.toString());
 
+    }
+
+    /**
+     * 查询日期间隔
+     *
+     * @return
+     */
+    @Test
+    public void dateDuration() {
+        LocalDate start = LocalDate.parse("2021-03-03");
+        LocalDate end = LocalDate.parse("2021-03-04");
+        Long result = 0L;
+        result = start.until(end, ChronoUnit.DAYS);
+        System.out.println(result);
+
+        LocalDate endDate = start.plusMonths(1);
+        System.out.println(endDate);
     }
 }
