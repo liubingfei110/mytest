@@ -1,0 +1,10 @@
+@startuml
+title 数据共享平台-数据查询时序图
+
+actor 数据共享平台用户 as user
+participant "数据填报管理" as dataReport
+
+autonumber
+user->dataReport:查询已提交的报表数据
+dataReport-->user:返回报表数据
+@enduml

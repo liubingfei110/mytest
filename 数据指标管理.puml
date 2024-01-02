@@ -1,0 +1,14 @@
+@startuml
+title 数据指标管理时序图
+
+actor 统计局用户 as user
+participant "数据指标管理" as dataReport
+
+autonumber
+user->dataReport:新增数据指标
+user->dataReport:修改数据指标
+user->dataReport:删除数据指标
+user->dataReport:启用/停用数据指标
+user->dataReport:查询报数据指标
+dataReport-->user:返回数据指标信息
+@enduml

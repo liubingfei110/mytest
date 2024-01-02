@@ -8,7 +8,7 @@ import lombok.Data;
  * @Description: 面条
  */
 @Data
-public class FoodNoodle extends Food{
+public class FoodNoodle extends Food {
 
 
     /**
@@ -30,9 +30,10 @@ public class FoodNoodle extends Food{
 
     /**
      * 添加辛辣
+     *
      * @param spicy
      */
-    private void addSpicy(String spicy){
+    private void addSpicy(String spicy) {
         this.spicy = spicy;
     }
 

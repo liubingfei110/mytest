@@ -1,0 +1,13 @@
+@startuml
+title 中台城市CP-组织关系管理时序图
+
+actor 组织管理员用户 as user
+participant "组织管理" as userAdmin
+actor 运营管理员 as YunYingAdmin
+
+autonumber
+user->userAdmin:提交创建的组织与组织的关系信息
+userAdmin->YunYingAdmin:申请创建
+YunYingAdmin->userAdmin:审批组织关系
+userAdmin-->user:返回审批结果
+@enduml

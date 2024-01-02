@@ -1,0 +1,23 @@
+@startuml
+title 报表管理时序图
+
+actor 统计局用户 as user
+participant "报表管理" as dataReport
+participant "报表分类管理" as dataType
+participant "报表模板管理" as dataModel
+participant "政府端项目" as dataGov
+
+autonumber
+user->dataReport:填写报表信息
+activate dataReport
+dataReport->dataType: 选择报表分类（tb_sc_report_type）
+dataType-->dataReport: 获取报表分类
+dataReport->dataModel: 选择报表模板（tb_sc_ report_template）
+dataModel-->dataReport: 获取报表模板
+dataReport->dataGov: 查询填报单位（调用政府端项目接口）
+activate dataGov
+dataGov-->dataReport: 获取单位列表
+dataReport->dataReport: 新增报表（tb_sc_report_setting）
+dataReport->dataReport: 下发报表，每个单位新增一条数据（tb_sc_report_filling）
+dataReport-->user: 获取报表信息，包括各单位填报数据和他们的合计数据（总表预览）
+@enduml

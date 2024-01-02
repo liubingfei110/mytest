@@ -1,0 +1,14 @@
+@startuml
+title 报表分类管理时序图
+
+actor 统计局用户 as user
+participant "报表分类管理" as dataReport
+
+autonumber
+user->dataReport:新增报表分类
+user->dataReport:修改报表分类
+user->dataReport:删除报表分类
+user->dataReport:启用/停用报表分类
+user->dataReport:查询报表分类
+dataReport-->user:返回报表分类信息
+@enduml

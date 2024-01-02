@@ -1,0 +1,23 @@
+@startuml
+title 中台城市CP-账号管理时序图
+
+actor 组织管理员用户 as user
+participant "中台能开平台" as MiddlePlatform
+participant "账号管理" as userAdmin
+participant "角色管理" as roleAdmin
+participant "易信用户管理" as YXAdmin
+
+autonumber
+user->MiddlePlatform:应用注册
+MiddlePlatform-->user:返回应用注册信息
+user->userAdmin:创建用户
+userAdmin->YXAdmin:调用易信用户创建接口
+YXAdmin-->userAdmin:返回易信用户创建信息
+userAdmin->userAdmin:创建城市CP用户，关联易信账号
+userAdmin->roleAdmin:关联角色信息
+roleAdmin-->userAdmin:返回用户角色信息
+userAdmin-->user:返回用户创建信息
+user->userAdmin:用户实名认证
+userAdmin->userAdmin:调用第三方实名认证接口
+userAdmin-->user:返回用户实名认证信息
+@enduml

@@ -24,7 +24,7 @@ public class SteamTest {
     /**
      * List Map 遍历
      */
-    public void test1(){
+    public void test1() {
 
         //List遍历
         List<OverallUseStatisticsResponse> list = new ArrayList<>();
@@ -40,7 +40,7 @@ public class SteamTest {
     /**
      * 分组、分组统计
      */
-    public void test2(){
+    public void test2() {
         //List根据organId分组
         List<OverallUseStatisticsResponse> list = new ArrayList<>();
         Map<String, List<OverallUseStatisticsResponse>> map1 = list.stream().collect(Collectors.groupingBy(OverallUseStatisticsResponse::getOrganId));
@@ -52,7 +52,7 @@ public class SteamTest {
     /**
      * 合计
      */
-    public void test3(){
+    public void test3() {
         List<OverallUseStatisticsResponse> list = new ArrayList<>();
         Integer actualNumber = list.stream().mapToInt(OverallUseStatisticsResponse::getActualNumber).sum();
         BigDecimal emptyArea = list.stream().map(OverallUseStatisticsResponse::getEmptyArea).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -61,10 +61,10 @@ public class SteamTest {
     /**
      * List合并记录，并累加。
      */
-    public void test4(){
+    public void test4() {
         //把每一条记录相加，第一条记录为总和。
         List<OverallUseStatisticsResponse> list = new ArrayList<>();
-        list.stream().reduce((a, b) ->{
+        list.stream().reduce((a, b) -> {
             a.setStaffNumber(a.getStaffNumber() + b.getStaffNumber());
             a.setActualNumber(a.getActualNumber() + b.getActualNumber());
             a.setEmptyArea(a.getEmptyArea().add(b.getEmptyArea()));
@@ -76,7 +76,7 @@ public class SteamTest {
     /**
      * 合计List：reduce
      */
-    public void test4_2(){
+    public void test4_2() {
         //带合计的数据集合
         List<ExcessiveOrganExport> excessiveOrganExportList = new ArrayList<>();
         //添加合计行
@@ -91,17 +91,17 @@ public class SteamTest {
     /**
      * List转Map
      */
-    public void test5(){
+    public void test5() {
         List<OverallUseStatisticsResponse> list = new ArrayList<>();
-        Map<String, String> map1 = list.stream().collect(Collectors.toMap(OverallUseStatisticsResponse::getOrganId, OverallUseStatisticsResponse::getOrganName, (k1,k2) ->k2));
-        Map<String, OverallUseStatisticsResponse> map2 = list.stream().collect(Collectors.toMap(OverallUseStatisticsResponse::getOrganId, a -> a, (o1,o2) -> o2));
+        Map<String, String> map1 = list.stream().collect(Collectors.toMap(OverallUseStatisticsResponse::getOrganId, OverallUseStatisticsResponse::getOrganName, (k1, k2) -> k2));
+        Map<String, OverallUseStatisticsResponse> map2 = list.stream().collect(Collectors.toMap(OverallUseStatisticsResponse::getOrganId, a -> a, (o1, o2) -> o2));
         Map<String, List<OverallUseStatisticsResponse>> map3 = list.stream().collect(Collectors.groupingBy(OverallUseStatisticsResponse::getOrganId));
     }
 
     /**
      * 排序、过滤、去重
      */
-    public void test6(){
+    public void test6() {
         List<OverallUseStatisticsResponse> list = new ArrayList<>();
         List<OverallUseStatisticsResponse> list2 = (List<OverallUseStatisticsResponse>) list.stream().sorted(Comparator.comparing(OverallUseStatisticsResponse::getAccessoryArea).reversed().thenComparing(OverallUseStatisticsResponse::getAreaLevel));
         list2.stream().filter(overallUseStatisticsResponse -> overallUseStatisticsResponse.getActualNumber() > 2).distinct().collect(Collectors.toList());
@@ -112,33 +112,33 @@ public class SteamTest {
      * 排序
      */
     @Test
-    public void test7(){
+    public void test7() {
         String str = "X100110021002,X100110021001,X100110021000,X10021002,X10021001,X10021000,X10011002,X10011001,X10011000,X1002,X1001,X1000,X";
         String[] array = str.split(",");
         List<String> list = new ArrayList<>(Arrays.asList(array));
         //升序
         list.sort(String::compareTo);
-        list.stream().forEach(a -> System.out.println("["+a+"]"));
+        list.stream().forEach(a -> System.out.println("[" + a + "]"));
 
         //降序
         List<Integer> numberList = new ArrayList<>(Arrays.asList(9, 2, 3, 4, 5));
         //注意：o1 代表后面一个数 o2代表前面一个数
         numberList.sort((o1, o2) -> {
-            if(o1.compareTo(o2) >= 0){
+            if (o1.compareTo(o2) >= 0) {
                 return -1;//-1表示交换两个数的位置 所以这里实现的是降序排列
             }
             return 1;
         });
-        numberList.stream().forEach(a -> System.out.println("["+a+"]"));
+        numberList.stream().forEach(a -> System.out.println("[" + a + "]"));
     }
 
     /**
      * 截取集合
      */
     @Test
-    public void test8(){
+    public void test8() {
         List<String> abc = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
-        List<String> result1 = abc.subList(1,3);
+        List<String> result1 = abc.subList(1, 3);
         List<String> result2 = abc.stream().skip(3).collect(Collectors.toList());
         List<String> result3 = abc.stream().limit(1).collect(Collectors.toList());
         System.out.println(result1.toString());
@@ -147,30 +147,30 @@ public class SteamTest {
     }
 
     @Test
-    public void test9(){
+    public void test9() {
         String abc = "abc";
         System.out.println(Arrays.asList(abc.split(",")));
     }
 
     @Test
-    public void test10(){
+    public void test10() {
         String abc = "abc";
-        String def = abc +'%';
+        String def = abc + '%';
         String name = abc + "%";
-        System.out.println(def + "," +name);
+        System.out.println(def + "," + name);
     }
 
     @Test
-    public void test11(){
+    public void test11() {
         String a = "a";
         String b = "b";
         List<String> list = new ArrayList<>();
         list.add(a);
         list.add(b);
         String c = null;
-        if(list.contains(c)){
+        if (list.contains(c)) {
             System.out.println("xxxxxxxxxxxxx");
-        }else{
+        } else {
             System.out.println("yyyyyyyyyyyyy");
         }
         BigDecimal bigDecimal = BigDecimal.valueOf(100.100);
@@ -184,16 +184,16 @@ public class SteamTest {
      * 拼接字符串测试
      */
     @Test
-    public void test12(){
+    public void test12() {
         String a = "a";
         String b = "b";
         String c = null;
         String d = "";
         String e = "e";
-        String result1 = StringUtils.join(a,b);
-        String result2 = StringUtils.join(a,b,c);
-        String result3 = StringUtils.join(a,b,c,d);
-        String result4 = StringUtils.join(a,b,c,d,e);
+        String result1 = StringUtils.join(a, b);
+        String result2 = StringUtils.join(a, b, c);
+        String result3 = StringUtils.join(a, b, c, d);
+        String result4 = StringUtils.join(a, b, c, d, e);
         System.out.println(result1);
         System.out.println(result2);
         System.out.println(result3);
@@ -201,14 +201,14 @@ public class SteamTest {
     }
 
     @Test
-    public void test13(){
+    public void test13() {
         // redis 宕机时采用时间戳加随机数
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         Random random = new Random();
         //14位时间戳到 + 6位随机数
-        timeStamp +=(random.nextInt(10)+"") + (random.nextInt(10)+"") + (random.nextInt(10)+"");
+        timeStamp += (random.nextInt(10) + "") + (random.nextInt(10) + "") + (random.nextInt(10) + "");
         System.out.println(timeStamp);
-        timeStamp +=(random.nextInt(10)+"") + (random.nextInt(10)+"") + (random.nextInt(10)+"");
+        timeStamp += (random.nextInt(10) + "") + (random.nextInt(10) + "") + (random.nextInt(10) + "");
         System.out.println(timeStamp);
     }
 
@@ -216,24 +216,24 @@ public class SteamTest {
      * 排序
      */
     @Test
-    public void test14(){
+    public void test14() {
         //降序
         List<Integer> numberList = new ArrayList<>(Arrays.asList(9, 2, 3, 4, 5));
         //注意：o1 代表后面一个数 o2代表前面一个数
         numberList.sort((o1, o2) -> {
-            if(o1.compareTo(o2) >= 0){
+            if (o1.compareTo(o2) >= 0) {
                 return -1;//-1表示交换两个数的位置 所以这里实现的是降序排列
             }
             return 1;
         });
-        numberList.stream().forEach(a -> System.out.println("["+a+"]"));
+        numberList.stream().forEach(a -> System.out.println("[" + a + "]"));
     }
 
     /**
      * Set
      */
     @Test
-    public void test15(){
+    public void test15() {
         Set<String> set = new HashSet<>();
         set.add("9");
         set.add("2");
@@ -245,7 +245,7 @@ public class SteamTest {
     }
 
     @Test
-    public void test16(){
+    public void test16() {
         SysResourcesResponse sysResourcesResponse = new SysResourcesResponse();
         sysResourcesResponse.setId("1a");
         sysResourcesResponse.setChildren(new ArrayList<>(Arrays.asList(new SysResourcesResponse().setId("2a"), new SysResourcesResponse().setId("2b"))));
@@ -268,25 +268,25 @@ public class SteamTest {
                 i--;
             }
         }
-        SysResourcesResponse first =  childrenList.get(0);
+        SysResourcesResponse first = childrenList.get(0);
         removeNotFirstResources(first);
     }
 
     @Test
-    public void test17(){
-        if("".contains("")){
+    public void test17() {
+        if ("".contains("")) {
             System.out.println("空包含空");
         }
-        if("123".contains("")){
+        if ("123".contains("")) {
             System.out.println("字符串包含空");
         }
     }
 
     @Test
-    public void test18(){
-        List<Integer> list1 = new ArrayList<>(Arrays.asList(1,2,3,4,5));
-        List<Integer> list2 = new ArrayList<>(Arrays.asList(0,9,8));
-        list1.addAll(3,list2);
+    public void test18() {
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(0, 9, 8));
+        list1.addAll(3, list2);
         System.out.println(list1.toString());
 
     }
@@ -309,11 +309,31 @@ public class SteamTest {
     }
 
     @Test
-    public  void localDateToString() {
-        LocalDate localDate = LocalDate.of(2021,12,28);
+    public void localDateToString() {
+        LocalDate localDate = LocalDate.of(2021, 12, 28);
         String format = "yyyy年MM月dd日";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         String dateStr = localDate.format(dateTimeFormatter);
         System.out.println(dateStr);
     }
+
+    @Test
+    public void test21(){
+        String startDate = com.sitech.smartcity.util.util.DateUtils.getBeforeDate(new Date(), 6);
+        String endDate = com.sitech.smartcity.util.util.DateUtils.getDate(0, new Date(), "yyyy-MM-dd");
+        System.out.println(startDate);
+        System.out.println(endDate);
+    }
+
+    public void testDBConnect(){
+        String url = "";
+        String dbname = "";
+        String username = "";
+        String password = "";
+
+    }
+
+
+
+
 }

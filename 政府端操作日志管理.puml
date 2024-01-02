@@ -1,0 +1,41 @@
+@startuml
+title 日志管理：操作日志时序图
+
+actor 政府端用户PC as user
+participant "用户管理" as userAdmin
+participant "组织管理" as orgAdmin
+participant "角色管理" as roleAdmin
+participant "菜单管理" as menuAdmin
+participant "资源管理" as resourceAdmin
+participant "操作日志管理" as operateLog
+autonumber
+user->userAdmin:新增、修改、删除、查询账号
+activate userAdmin
+userAdmin->operateLog:记录操作日志
+activate operateLog
+operateLog-->userAdmin:返回用户管理
+activate user
+user->orgAdmin:新增、修改、删除、查询组织
+activate orgAdmin
+orgAdmin->operateLog:记录操作日志
+activate operateLog
+operateLog-->orgAdmin:返回组织管理
+activate user
+user->roleAdmin:新增、修改、删除、查询角色
+activate roleAdmin
+roleAdmin->operateLog:记录操作日志
+activate operateLog
+operateLog-->roleAdmin:返回角色管理
+activate user
+user->menuAdmin:新增、修改、删除、查询菜单
+activate menuAdmin
+menuAdmin->operateLog:记录操作日志
+activate operateLog
+operateLog-->menuAdmin:返回菜单管理
+activate user
+user -> resourceAdmin:新增、修改、删除、查询资源
+activate resourceAdmin
+resourceAdmin->operateLog:记录操作日志
+activate operateLog
+operateLog-->resourceAdmin:返回资源管理
+@enduml

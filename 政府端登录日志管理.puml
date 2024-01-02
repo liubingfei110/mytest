@@ -1,0 +1,15 @@
+@startuml
+title 日志管理：登录日志时序图
+
+actor 政府端用户APP和PC as user
+participant "登录日志管理：修改密码" as updatePasswordLog
+participant "登录日志管理：用户登录" as loginLog
+autonumber
+user->updatePasswordLog:忘记密码、重置密码
+activate updatePasswordLog
+updatePasswordLog-->user:返回登录页
+activate user
+user->loginLog:登录APP和PC
+activate loginLog
+loginLog-->user:返回首页
+@enduml

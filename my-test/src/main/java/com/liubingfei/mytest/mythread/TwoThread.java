@@ -5,7 +5,7 @@ package com.liubingfei.mytest.mythread;
  * @Date: 2021-05-08 16:10
  * @Description: 测试线程2
  */
-public class TwoThread implements Runnable{
+public class TwoThread implements Runnable {
     @Override
     public void run() {
 

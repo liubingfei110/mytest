@@ -1,0 +1,22 @@
+@startuml
+title 统计局报表管理时序图
+
+actor 统计局用户 as user
+participant "数据指标管理" as dataTarget
+participant "数据模板管理" as dataTemplate
+participant "数据报表管理" as dataReport
+
+autonumber
+user->dataTarget:新增数据指标
+user->dataReport:新增报表分类
+user->dataTemplate:新增报表模板
+activate dataTemplate
+dataTemplate->dataTemplate:选择数据指标
+dataTemplate->dataTemplate:选择报表分类
+dataTemplate-->user:返回报表模板信息
+activate dataReport
+dataReport->dataReport:选择报表模板
+dataReport->dataReport:选择报表分类
+dataReport->dataReport:选择委办局单位
+dataReport-->user:返回报表下发情况
+@enduml

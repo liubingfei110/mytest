@@ -38,20 +38,20 @@ public class HttpTest2 {
     /**
      * 根据经纬度查询地址
      *
-     * @param url 接口地址
+     * @param url      接口地址
      * @param paramMap 参数map
      * @return
      */
     public static JSONObject getAddressInfo(String url, Map<String, String> paramMap) {
         StringBuilder stringBuilder = new StringBuilder();
-        if(!paramMap.isEmpty()){
+        if (!paramMap.isEmpty()) {
             stringBuilder.append("?");
             paramMap.forEach((paramName, paramValue) -> stringBuilder.append(paramName + "=" + paramValue + "&"));
         }
         String stringBuilderStr = stringBuilder.toString();
         String lastStr = stringBuilderStr.substring(stringBuilderStr.length() - 1);
-        if("&".equals(lastStr)){
-            stringBuilderStr = stringBuilderStr.substring(0, stringBuilderStr.length() -1 );
+        if ("&".equals(lastStr)) {
+            stringBuilderStr = stringBuilderStr.substring(0, stringBuilderStr.length() - 1);
         }
         url = url + stringBuilderStr;
         JSONObject positionObj = new JSONObject();
@@ -62,7 +62,7 @@ public class HttpTest2 {
             JSONObject resultJOSN = JSONObject.parseObject(result);
             System.out.println("高德接口返回原始数据：");
             System.out.println(resultJOSN);
-            JSONObject jsonObject= resultJOSN.getJSONObject("regeocode");
+            JSONObject jsonObject = resultJOSN.getJSONObject("regeocode");
             String address = jsonObject.getString("formatted_address");
             JSONObject addressJsonObject = jsonObject.getJSONObject("addressComponent");
             String country = addressJsonObject.getString("country");

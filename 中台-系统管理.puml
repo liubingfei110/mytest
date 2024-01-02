@@ -1,0 +1,15 @@
+@startuml
+title 中台城市CP-系统管理时序图
+
+actor 运营管理员用户 as user
+participant "菜单管理" as MenuAdmin
+participant "角色管理" as roleAdmin
+
+autonumber
+user->MenuAdmin:新建菜单
+MenuAdmin-->user:返回菜单信息
+user->roleAdmin:创建角色
+roleAdmin->MenuAdmin:角色关联菜单
+MenuAdmin-->roleAdmin:返回菜单关联信息
+roleAdmin-->user:返回角色创建信息
+@enduml

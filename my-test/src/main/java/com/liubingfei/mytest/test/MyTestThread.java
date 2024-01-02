@@ -18,11 +18,11 @@ public class MyTestThread {
     public static void main(String[] args) {
         List<String> arr = new ArrayList<>();
         String abc = String.join(",", arr);
-        System.out.println("a"+abc+"a");
-        if(Objects.isNull(abc)){
+        System.out.println("a" + abc + "a");
+        if (Objects.isNull(abc)) {
             System.out.println(123);
         }
-        if(StringUtils.isBlank(abc)){
+        if (StringUtils.isBlank(abc)) {
             System.out.println(456);
         }
 

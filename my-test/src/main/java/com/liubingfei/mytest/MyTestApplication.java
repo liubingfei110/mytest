@@ -26,41 +26,41 @@ public class MyTestApplication {
     }
 
     @Test
-    public void test1(){
+    public void test1() {
         boolean flagA = true;
         boolean flagB = false;
         boolean flagC = false;
 
-        if(flagA || flagB & flagC){
+        if (flagA || flagB & flagC) {
             System.out.println(1);
-        }else{
+        } else {
             System.out.println(2);
         }
 
-        if((flagA || flagB) & flagC ){
+        if ((flagA || flagB) & flagC) {
             System.out.println(11);
-        }else{
+        } else {
             System.out.println(22);
         }
 
-        if(flagA || (flagB & flagC) ){
+        if (flagA || (flagB & flagC)) {
             System.out.println(111);
-        }else{
+        } else {
             System.out.println(222);
         }
 
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         AtomicInteger atomicInteger = new AtomicInteger();
-        for(int i = 0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             System.out.println(atomicInteger.getAndIncrement());
         }
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         String useOrganStrings = "[{\"reportOrganName\":\"123\",\"reportOrganType\":\"THREE\",\"reportCityStand\":\"1\",\"reportCityDeputy\":\"2\",\"reportStandBureauRank\":\"3\",\"reportDeputyBureauRank\":\"4\",\"reportBureauRankDown\":\"5\",\"reportCountyStand\":\"\",\"reportCountyDeputy\":\"\",\"reportStandAdministrative\":\"\",\"reportDeputyAdministrative\":\"\",\"reportAdministrativeDown\":\"\",\"reportVillageStand\":\"\",\"reportVillageDeputy\":\"\",\"reportVillageDown\":\"\"}]";
         List<ReportUseOrgan> reportUseOrganList = JSONObject.parseArray(useOrganStrings, ReportUseOrgan.class);
         if (Objects.nonNull(reportUseOrganList) && reportUseOrganList.size() > 0) {
@@ -74,7 +74,7 @@ public class MyTestApplication {
     }
 
     @Test
-    public void test4(){
+    public void test4() {
         Integer upFloorNum = 10;
         Integer downFloorNum = 2;
 
@@ -86,7 +86,7 @@ public class MyTestApplication {
     }
 
     @Test
-    public void test5(){
+    public void test5() {
         ReportUseOrgan reportUseOrgan = new ReportUseOrgan();
         reportUseOrgan.setDataReportOrderId("1");
         reportUseOrgan.setOrderNo(1);
@@ -100,13 +100,13 @@ public class MyTestApplication {
         list.add(reportUseOrgan);
         list.add(reportUseOrgan2);
         list.add(reportUseOrgan3);
-        Map<String,Integer> map = list.stream().collect(Collectors.groupingBy(ReportUseOrgan::getDataReportOrderId, Collectors.summingInt(ReportUseOrgan::getOrderNo)));
-        map.forEach((k,v) -> System.out.println(k + "  " + v));
+        Map<String, Integer> map = list.stream().collect(Collectors.groupingBy(ReportUseOrgan::getDataReportOrderId, Collectors.summingInt(ReportUseOrgan::getOrderNo)));
+        map.forEach((k, v) -> System.out.println(k + "  " + v));
 
     }
 
     @Test
-    public void test6(){
+    public void test6() {
         LocalDate date = LocalDate.now();
         int year = date.getYear();
         System.out.println(date);
@@ -116,16 +116,16 @@ public class MyTestApplication {
     @Test
     public void test7() {
         ArrayList<String> list = new ArrayList<String>();
-            list.add("a");
-            list.add("b");
-            list.add("c");
-            list.add("d");
-            System.out.println(list.subList(3, 4));
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        System.out.println(list.subList(3, 4));
     }
 
 
     @Test
-    public void test8(){
+    public void test8() {
         LocalDateTime localDateTime = LocalDateTime.now();
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = localDateTime.atZone(zoneId);
@@ -155,8 +155,8 @@ public class MyTestApplication {
         list.add(overallUseStatisticsResponse2);
         list.add(overallUseStatisticsResponse3);
         System.out.println(list.toString());
-        list.stream().reduce((a,b) ->{
-            a.setStaffNumber(a.getStaffNumber()+b.getStaffNumber());
+        list.stream().reduce((a, b) -> {
+            a.setStaffNumber(a.getStaffNumber() + b.getStaffNumber());
             a.setActualNumber(a.getActualNumber() + b.getActualNumber());
             return a;
         });
@@ -164,9 +164,9 @@ public class MyTestApplication {
     }
 
     @Test
-    public void test10(){
+    public void test10() {
         String str = "INSTITUTIONS_SAME_LEVEL,VERTICAL_MANAGEMENT_INSTITUTIONS,AGENCY,GOVERNMENT_AFFILIATED_INSTITUTIONS,OTHER";
-        System.out.println(">>>>>>>>>>>>>>>>>>>"+str.length());
+        System.out.println(">>>>>>>>>>>>>>>>>>>" + str.length());
     }
 
 }

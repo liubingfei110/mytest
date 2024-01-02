@@ -1,0 +1,22 @@
+@startuml
+title 商铺管理
+actor 应用 as app
+participant "配送中心" as distributionCenter
+participant "三方中心" as SanFang
+participant "第三方应用（闪送）" as ShanSong
+autonumber
+app->distributionCenter:创建商铺
+activate distributionCenter
+distributionCenter->SanFang:调用三方接口
+activate SanFang
+SanFang->ShanSong:调用闪送接口
+activate ShanSong
+ShanSong-->SanFang:返回商户创建信息
+SanFang-->distributionCenter:返回商户创建信息
+distributionCenter->distributionCenter:保存商铺信息
+distributionCenter-->app:返回商户创建信息
+activate ShanSong
+ShanSong->ShanSong:审核商铺
+ShanSong->distributionCenter:闪送回调接口，推送商铺审核状态
+distributionCenter->app:配送中心回调接口，推送商铺审核状态
+@enduml

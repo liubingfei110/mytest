@@ -7,7 +7,7 @@ package com.liubingfei.mytest.mythread;
  */
 public class OneThread extends Thread {
     @Override
-    public void run(){
+    public void run() {
 
     }
 

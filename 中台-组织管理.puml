@@ -1,0 +1,20 @@
+@startuml
+title 中台城市CP-组织部门管理时序图
+
+actor 组织管理员 as user
+participant 组织部门管理 as orgAdmin
+participant 易信组织管理 as YXAdmin
+actor 运营管理员 as YunYingAdmin
+
+autonumber
+user->orgAdmin:新增组织部门
+orgAdmin->YXAdmin:调用易信接口，新增组织部门
+YXAdmin->YXAdmin:易信创建组织部门信息
+YXAdmin-->orgAdmin:返回易信组织部门创建信息
+orgAdmin->orgAdmin:创建城市CP的组织部门信息
+orgAdmin-->user:返回组织部门信息
+orgAdmin->YunYingAdmin:向运营管理员申请创建组织信息
+YunYingAdmin->orgAdmin:运营管理员审批组织创建信息
+orgAdmin-->user:返回审批结果
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+title 统计局时序图
+
+actor 统计局用户 as user
+participant "指标模型管理" as targetModel
+participant "报表模板管理" as reportTemplate
+participant "报表管理" as reportNew
+autonumber
+user->targetModel:新增指标模型
+activate targetModel
+targetModel->reportTemplate:新增报表模板
+activate reportTemplate
+reportTemplate->reportNew:新增报表
+activate reportNew
+reportNew --> user:返回各委办局报表提交情况
+@enduml

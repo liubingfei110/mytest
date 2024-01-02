@@ -1,0 +1,11 @@
+@startuml
+title 数据填报管理时序图
+
+actor 委办局用户 as user
+participant "数据填报管理" as dataReport
+
+autonumber
+user->dataReport:新增/修改/删除/提交/查询填报数据，tb_sc_report_filling
+dataReport->dataReport:新增报表填报记录表（tb_sc_report_filling_record）
+dataReport-->user:返回填报数据
+@enduml

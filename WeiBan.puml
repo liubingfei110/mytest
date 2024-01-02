@@ -1,0 +1,8 @@
+@startuml
+title 委办局时序图
+
+actor 委办局用户 as user
+participant "数据填报管理" as reportFilling
+autonumber
+user->reportFilling:数据填报并提交
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+title 报表模板管理时序图
+
+actor 统计局用户 as user
+participant "报表模板管理" as dataModel
+participant "报表分类管理" as dataType
+participant "数据指标管理" as dataTarget
+autonumber
+user->dataModel:填写模板信息
+activate dataModel
+dataModel->dataType:选择报表分类
+activate dataType
+dataType-->dataModel:获取报表分类
+dataModel->dataTarget:选择数据指标
+activate dataTarget
+dataTarget-->dataModel:获取数据指标
+dataModel->dataModel:新增模板
+dataModel-->user:获取模板信息
+@enduml

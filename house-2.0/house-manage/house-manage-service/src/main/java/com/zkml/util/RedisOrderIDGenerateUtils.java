@@ -33,8 +33,9 @@ public class RedisOrderIDGenerateUtils {
 
     /**
      * 使用 前缀prefix + 14位时间戳 + expansion位自增Id (位数不够自动填充0)
-     * @param prefix redis-key前缀
-     * @param stepSize 默认初始自增步长，例如自增步长为2，初始1，则依次为3,5,7...
+     *
+     * @param prefix    redis-key前缀
+     * @param stepSize  默认初始自增步长，例如自增步长为2，初始1，则依次为3,5,7...
      * @param expansion 默认初始自增步长
      * @return
      */
@@ -45,7 +46,7 @@ public class RedisOrderIDGenerateUtils {
         String orderNo = "";
         try {
             //redis-key前缀
-            if(Objects.isNull(prefix)){
+            if (Objects.isNull(prefix)) {
                 prefix = "";
             }
             // 默认初始自增步长为1
@@ -69,8 +70,8 @@ public class RedisOrderIDGenerateUtils {
         } catch (Exception e) {
             Random random = new Random();
             //14位时间戳到 + expansion位随机数
-            for(int i = 0; i < expansion; i++){
-                timeStamp +=(random.nextInt(10)+"");
+            for (int i = 0; i < expansion; i++) {
+                timeStamp += (random.nextInt(10) + "");
             }
             orderNo = prefix + timeStamp;
             return orderNo;

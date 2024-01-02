@@ -1,0 +1,11 @@
+@startuml
+title 中台城市CP-组织与用户关系管理时序图
+
+actor 组织管理员用户 as user
+participant "组织人员关系管理" as orgUserAdmin
+
+autonumber
+user->orgUserAdmin:提交组织与用户关联关系信息
+orgUserAdmin->orgUserAdmin:创建组织与用户的关联关系
+orgUserAdmin-->user:返回组织用户关联关系信息
+@enduml

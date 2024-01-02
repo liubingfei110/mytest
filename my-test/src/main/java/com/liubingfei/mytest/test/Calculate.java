@@ -21,10 +21,10 @@ public class Calculate {
      * 超大型整数相加
      */
     @Test
-    public void test1(){
+    public void test1() {
         String a1 = "111111111111111111111111111111111111111111111111111111111111";
         String a2 = "999999999999999999999999999999999999999999999999999999999999";
-        System.out.println("长度：a1:"+ a1.length() + ", a2:"+a2.length());
+        System.out.println("长度：a1:" + a1.length() + ", a2:" + a2.length());
         LocalDateTime localDateTime1 = LocalDateTime.now();
         BigInteger int1 = new BigInteger("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
         BigInteger int2 = new BigInteger("99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
@@ -35,13 +35,13 @@ public class Calculate {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         SysOrganizationNode sysOrganizationNode = new SysOrganizationNode();
         sysOrganizationNode.setNodeCode("1001,1002");
         sysOrganizationNode.setId("1");
         List<String> sysOrganizationNodeList = new ArrayList<>(Arrays.asList(sysOrganizationNode.getNodeCode().split(",")));
         List<SysOrganizationNode> sysOrganizationNodeList1 = new ArrayList<>();
-        sysOrganizationNodeList.stream().forEach(nodeCode ->{
+        sysOrganizationNodeList.stream().forEach(nodeCode -> {
             SysOrganizationNode node = new SysOrganizationNode();
             node.setNodeCode(nodeCode);
             node.setId(sysOrganizationNode.getId());
@@ -52,26 +52,32 @@ public class Calculate {
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         List<String> list = new ArrayList<>();
-        list.add("1");list.add("2");list.add("3");list.add("4");list.add("5");list.add("6");list.add("7");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
+        list.add("7");
         System.out.println(list.toString());
-        System.out.println("0-3:"+list.subList(0,3));
-        System.out.println("1-3:"+list.subList(1,3));
-        System.out.println("3-3:"+list.subList(3,3));
-        System.out.println("4-7:"+list.subList(4,7));
+        System.out.println("0-3:" + list.subList(0, 3));
+        System.out.println("1-3:" + list.subList(1, 3));
+        System.out.println("3-3:" + list.subList(3, 3));
+        System.out.println("4-7:" + list.subList(4, 7));
 
 
     }
 
     @Test
-    public void test4(){
+    public void test4() {
         LocalDateTime now1 = LocalDateTime.now();
         LocalDateTime now2 = now1.plusMinutes(1L);
         int a = now1.compareTo(now2);
-        if(a >= 0){
+        if (a >= 0) {
             System.out.println(1);
-        }else{
+        } else {
             System.out.println(2);
         }
         System.out.println(a);
