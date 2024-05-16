@@ -1,0 +1,13 @@
+@startuml
+title 网格中心-空间地理信息管理时序图
+
+actor 接口调用者 as user
+participant 空间地理信息管理 as area
+
+autonumber
+user->area:创建小区、楼栋、房屋、商户
+area-->user:返回结果
+user->area:查询小区、楼栋、房屋、商户
+area-->user:返回小区、楼栋、房屋、商户信息
+
+@enduml

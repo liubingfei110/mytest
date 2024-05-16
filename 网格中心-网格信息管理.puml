@@ -1,0 +1,13 @@
+@startuml
+title 网格中心-网格信息管理时序图
+
+actor 接口调用者 as user
+participant 网格信息管理 as grid
+
+autonumber
+user->grid:创建网格
+grid-->user:返回结果
+user->grid:查询网格
+grid-->user:返回网格信息
+
+@enduml

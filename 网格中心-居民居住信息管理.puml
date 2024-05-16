@@ -1,0 +1,13 @@
+@startuml
+title 网格中心-居民居住信息管理时序图
+
+actor 接口调用者 as user
+participant 居民居住信息管理 as public
+
+autonumber
+user->public:创建居民居住信息
+public-->user:返回结果
+user->public:查询居民居住信息
+public-->user:返回居民居住信息
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+title 网格中心-公共设施信息管理时序图
+
+actor 接口调用者 as user
+participant 公共设施信息管理 as public
+
+autonumber
+user->public:创建公共设施信息
+public-->user:返回结果
+user->public:查询公共设施信息
+public-->user:返回公共设施信息
+
+@enduml
