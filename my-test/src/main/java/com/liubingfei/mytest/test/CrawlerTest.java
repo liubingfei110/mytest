@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,10 +13,7 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,45 +32,59 @@ public class CrawlerTest {
         //遍历省，并获取市网页链接
         Map<String, String> provinceAreaMap = new HashMap<>();
         Map<String, String> cityUrlMap = new HashMap<>();
-        setDataOfProvince(provinceAreaMap, cityUrlMap, baseUrl);
+        List<String> provinceErrorList = new ArrayList<>();
+        setDataOfProvince(provinceAreaMap, cityUrlMap, baseUrl, provinceErrorList);
+        writeErrorUrl(provinceErrorList, "D:\\行政区划代码-省-失败地址.txt");
         writeToFile(provinceAreaMap, "D:\\行政区划代码-省.txt");
         //遍历市，并获取区（县）网页链接
         Map<String, String> cityAreaMap = new HashMap<>();
         Map<String, String> countryUrlMap = new HashMap<>();
-        doLoopSetDataOfCity(cityAreaMap, cityUrlMap, countryUrlMap, baseUrl);
+        List<String> cityErrorList = new ArrayList<>();
+        doLoopSetDataOfCity(cityAreaMap, cityUrlMap, countryUrlMap, baseUrl, cityErrorList);
+        writeErrorUrl(cityErrorList, "D:\\行政区划代码-市-失败地址.txt");
         writeToFile(cityAreaMap, "D:\\行政区划代码-市.txt");
         //遍历区（县），并获取各街道（镇）网页链接
         Map<String, String> countryAreaMap = new HashMap<>();
         Map<String, String> townUrlMap = new HashMap<>();
-        doLoopSetDataOfTown(countryAreaMap, countryUrlMap, townUrlMap, baseUrl);
+        List<String> townErrorList = new ArrayList<>();
+        doLoopSetDataOfTown(countryAreaMap, countryUrlMap, townUrlMap, baseUrl, townErrorList);
+        writeErrorUrl(townErrorList, "D:\\行政区划代码-县-失败地址.txt");
         writeToFile(countryAreaMap, "D:\\行政区划代码-县.txt");
         //遍历街道、镇
         Map<String, String> villageAreaMap = new HashMap<>();
         Map<String, String> villageUrlMap = new HashMap<>();
-        doLoopSetDataOfVillage(villageAreaMap, townUrlMap, villageUrlMap, baseUrl);
+        List<String> villageErrorList = new ArrayList<>();
+        doLoopSetDataOfVillage(villageAreaMap, townUrlMap, villageUrlMap, baseUrl, villageErrorList);
+        writeErrorUrl(villageErrorList, "D:\\行政区划代码-镇-失败地址.txt");
         writeToFile(villageAreaMap, "D:\\行政区划代码-镇.txt");
         //遍历所有居委会
         Map<String, String> neighborhoodAreaMap = new HashMap<>();
-        setDataOfNeighborhood(neighborhoodAreaMap, villageUrlMap);
+        List<String> neighborhoodErrorList = new ArrayList<>();
+        setDataOfNeighborhood(neighborhoodAreaMap, villageUrlMap, neighborhoodErrorList);
+        writeErrorUrl(neighborhoodErrorList, "D:\\行政区划代码-居委会-失败地址.txt");
         writeToFile(neighborhoodAreaMap, "D:\\行政区划代码-居委会.txt");
         //补充：一些市下面，直接是街道、镇的地区。
         Map<String, String> villageAreaOtherMap = new HashMap<>();
         Map<String, String> villageUrlOtherMap = new HashMap<>();
-        doLoopSetDataOfVillage(villageAreaOtherMap, countryUrlMap, villageUrlOtherMap, baseUrl);
+        List<String> villageOtherErrorList = new ArrayList<>();
+        doLoopSetDataOfVillage(villageAreaOtherMap, countryUrlMap, villageUrlOtherMap, baseUrl, villageOtherErrorList);
+        writeErrorUrl(villageOtherErrorList, "D:\\行政区划代码-镇补-失败地址.txt");
         writeToFile(villageAreaOtherMap, "D:\\行政区划代码-镇补.txt");
         //补充：这些街道、镇下面的居委会
         Map<String, String> neighborhoodAreaOtherMap = new HashMap<>();
-        setDataOfNeighborhood(neighborhoodAreaOtherMap, villageUrlOtherMap);
+        List<String> neighborhoodOtherErrorList = new ArrayList<>();
+        setDataOfNeighborhood(neighborhoodAreaOtherMap, villageUrlOtherMap, neighborhoodOtherErrorList);
+        writeErrorUrl(neighborhoodOtherErrorList, "D:\\行政区划代码-居委会补-失败地址.txt");
         writeToFile(neighborhoodAreaOtherMap, "D:\\行政区划代码-居委会补.txt");
-        //写入文件
-        areaMap.putAll(provinceAreaMap);
-        areaMap.putAll(cityAreaMap);
-        areaMap.putAll(countryAreaMap);
-        areaMap.putAll(villageAreaMap);
-        areaMap.putAll(villageAreaOtherMap);
-        areaMap.putAll(neighborhoodAreaMap);
-        areaMap.putAll(neighborhoodAreaOtherMap);
-        writeToFile(areaMap, "D:\\行政区划代码.txt");
+//        //写入文件
+//        areaMap.putAll(provinceAreaMap);
+//        areaMap.putAll(cityAreaMap);
+//        areaMap.putAll(countryAreaMap);
+//        areaMap.putAll(villageAreaMap);
+//        areaMap.putAll(villageAreaOtherMap);
+//        areaMap.putAll(neighborhoodAreaMap);
+//        areaMap.putAll(neighborhoodAreaOtherMap);
+//        writeToFile(areaMap, "D:\\行政区划代码.txt");
     }
 
     public void writeToFile(Map<String, String> areaMap, String filePath) {
@@ -99,10 +111,33 @@ public class CrawlerTest {
         }
     }
 
-    public void setDataOfProvince(Map<String, String> areaMap, Map<String, String> cityUrlMap, String baseUrl) {
+    public void writeErrorUrl(List<String> urlList, String filePath) {
+        if(CollectionUtils.isEmpty(urlList)){
+            return;
+        }
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF-8");
+            PrintWriter printWriter = new PrintWriter(outputStreamWriter, true);
+            for (String url : urlList) {
+                printWriter.println(url);
+            }
+            printWriter.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+
+        }
+    }
+
+    public void setDataOfProvince(Map<String, String> areaMap, Map<String, String> cityUrlMap, String baseUrl, List<String> provinceErrorList) {
         HtmlPage htmlPage = loopReadHtmlPage(new WebClient(), baseUrl, 1);
         if(Objects.isNull(htmlPage)){
-            log.error("URL访问失败，跳过。URL:" + htmlPage);
+            provinceErrorList.add(baseUrl);
             return;
         }
         Document document = Jsoup.parse(htmlPage.asXml());
@@ -135,27 +170,27 @@ public class CrawlerTest {
         }
     }
 
-    public void doLoopSetDataOfCity(Map<String, String> areaMap, Map<String, String> cityUrlMap, Map<String, String> countryUrlMap, String baseUrl) {
+    public void doLoopSetDataOfCity(Map<String, String> areaMap, Map<String, String> cityUrlMap, Map<String, String> countryUrlMap, String baseUrl, List<String> cityErrorList) {
         Map<String, String> cityAreaMap = new HashMap<>();
         Map<String, String> countryUrlAreaMap = new HashMap<>();
         if (countryUrlMap.isEmpty()) {
-            setDataOfCity(cityAreaMap, cityUrlMap, countryUrlAreaMap, baseUrl);
+            setDataOfCity(cityAreaMap, cityUrlMap, countryUrlAreaMap, baseUrl, cityErrorList);
         }
         countryUrlAreaMap.forEach((key, value) -> {
             if (StringUtils.isBlank(key) || StringUtils.isBlank(value)) {
-                doLoopSetDataOfCity(areaMap, cityUrlMap, countryUrlMap, baseUrl);
+                doLoopSetDataOfCity(areaMap, cityUrlMap, countryUrlMap, baseUrl, cityErrorList);
             }
         });
         areaMap.putAll(cityAreaMap);
         countryUrlMap.putAll(countryUrlAreaMap);
     }
 
-    public void setDataOfCity(Map<String, String> areaMap, Map<String, String> cityUrlMap, Map<String, String> countryUrlMap, String baseUrl) {
+    public void setDataOfCity(Map<String, String> areaMap, Map<String, String> cityUrlMap, Map<String, String> countryUrlMap, String baseUrl, List<String> cityErrorList) {
         //遍历市，并获取各区（县）网页链接
         cityUrlMap.forEach((provinceName, provinceUrl) -> {
             HtmlPage cityPage = loopReadHtmlPage(new WebClient(), provinceUrl, 1);
             if(Objects.isNull(cityPage)){
-                log.error("URL访问失败，跳过。URL:" + provinceUrl);
+                cityErrorList.add(provinceUrl);
                 return;//跳出本次循环
             }
             Document cityDocument = Jsoup.parse(cityPage.asXml());
@@ -186,26 +221,26 @@ public class CrawlerTest {
         });
     }
 
-    public void doLoopSetDataOfTown(Map<String, String> areaMap, Map<String, String> countryUrlMap, Map<String, String> townUrlMap, String baseUrl) {
+    public void doLoopSetDataOfTown(Map<String, String> areaMap, Map<String, String> countryUrlMap, Map<String, String> townUrlMap, String baseUrl, List<String> townErrorList) {
         Map<String, String> townAreaMap = new HashMap<>();
         Map<String, String> townUrlAreaMap = new HashMap<>();
         if (townUrlMap.isEmpty()) {
-            setDataOfTown(townAreaMap, countryUrlMap, townUrlAreaMap, baseUrl);
+            setDataOfTown(townAreaMap, countryUrlMap, townUrlAreaMap, baseUrl, townErrorList);
         }
         townUrlAreaMap.forEach((key, value) -> {
             if (StringUtils.isBlank(key) || StringUtils.isBlank(value)) {
-                doLoopSetDataOfTown(areaMap, countryUrlMap, townUrlMap, baseUrl);
+                doLoopSetDataOfTown(areaMap, countryUrlMap, townUrlMap, baseUrl, townErrorList);
             }
         });
         areaMap.putAll(townAreaMap);
         townUrlMap.putAll(townUrlAreaMap);
     }
 
-    public void setDataOfTown(Map<String, String> areaMap, Map<String, String> countryUrlMap, Map<String, String> townUrlMap, String baseUrl) {
+    public void setDataOfTown(Map<String, String> areaMap, Map<String, String> countryUrlMap, Map<String, String> townUrlMap, String baseUrl, List<String> townErrorList) {
         countryUrlMap.forEach((cityName, cityUrl) -> {
             HtmlPage countryPage = loopReadHtmlPage(new WebClient(), cityUrl, 1);
             if(Objects.isNull(countryPage)){
-                log.error("URL访问失败，跳过。URL:" + countryPage);
+                townErrorList.add(cityUrl);
                 return;//跳出本次循环
             }
             Document countryDocument = Jsoup.parse(countryPage.asXml());
@@ -249,26 +284,26 @@ public class CrawlerTest {
         });
     }
 
-    public void doLoopSetDataOfVillage(Map<String, String> areaMap, Map<String, String> townUrlMap, Map<String, String> villageUrlMap, String baseUrl) {
+    public void doLoopSetDataOfVillage(Map<String, String> areaMap, Map<String, String> townUrlMap, Map<String, String> villageUrlMap, String baseUrl, List<String> villageErrorList) {
         Map<String, String> villageAreaMap = new HashMap<>();
         Map<String, String> villageUrlAreaMap = new HashMap<>();
         if (villageUrlMap.isEmpty()) {
-            setDataOfVillage(villageAreaMap, townUrlMap, villageUrlAreaMap, baseUrl);
+            setDataOfVillage(villageAreaMap, townUrlMap, villageUrlAreaMap, baseUrl, villageErrorList);
         }
         villageUrlAreaMap.forEach((key, value) -> {
             if (StringUtils.isBlank(key) || StringUtils.isBlank(value)) {
-                doLoopSetDataOfVillage(areaMap, townUrlMap, villageUrlMap, baseUrl);
+                doLoopSetDataOfVillage(areaMap, townUrlMap, villageUrlMap, baseUrl, villageErrorList);
             }
         });
         areaMap.putAll(villageAreaMap);
         villageUrlMap.putAll(villageUrlAreaMap);
     }
 
-    public void setDataOfVillage(Map<String, String> areaMap, Map<String, String> townUrlMap, Map<String, String> villageUrlMap, String baseUrl) {
+    public void setDataOfVillage(Map<String, String> areaMap, Map<String, String> townUrlMap, Map<String, String> villageUrlMap, String baseUrl, List<String> villageErrorList) {
         townUrlMap.forEach((countryName, countryUrl) -> {
             HtmlPage villagePage = loopReadHtmlPage(new WebClient(), countryUrl, 1);
             if(Objects.isNull(villagePage)){
-                log.error("URL访问失败，跳过。URL:" + villagePage);
+                villageErrorList.add(countryUrl);
                 return;//跳出本次循环
             }
             Document villageDocument = Jsoup.parse(villagePage.asXml());
@@ -304,11 +339,11 @@ public class CrawlerTest {
         });
     }
 
-    public void setDataOfNeighborhood(Map<String, String> areaMap, Map<String, String> villageUrlMap) {
+    public void setDataOfNeighborhood(Map<String, String> areaMap, Map<String, String> villageUrlMap, List<String> neighborhoodErrorList) {
         villageUrlMap.forEach((villageName, villageUrl) -> {
             HtmlPage neighborhoodPage = loopReadHtmlPage(new WebClient(), villageUrl, 1);
             if(Objects.isNull(neighborhoodPage)){
-                log.error("URL访问失败，跳过。URL:" + neighborhoodPage);
+                neighborhoodErrorList.add(villageUrl);
                 return;//跳出本次循环
             }
             Document neighborhoodDocument = Jsoup.parse(neighborhoodPage.asXml());
