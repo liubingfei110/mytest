@@ -1,11 +1,15 @@
 @startuml
-title 中台城市CP-组织与用户关系管理时序图
+title 城市组织中心：用户和组织绑定和解绑关系时序图
 
 actor 组织管理员用户 as user
 participant "组织人员关系管理" as orgUserAdmin
+participant "日志管理" as LogAdmin
 
 autonumber
-user->orgUserAdmin:提交组织与用户关联关系信息
-orgUserAdmin->orgUserAdmin:创建组织与用户的关联关系
-orgUserAdmin-->user:返回组织用户关联关系信息
+user->orgUserAdmin:用户绑定组织
+orgUserAdmin->LogAdmin:记录用户绑定组织关系信息
+LogAdmin->user:返回组织用户关联关系信息
+user->orgUserAdmin:用户解绑组织
+orgUserAdmin->LogAdmin:记录用户解绑组织关系信息
+LogAdmin->user:返回解绑后的组织或用户信息
 @enduml

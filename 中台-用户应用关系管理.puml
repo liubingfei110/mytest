@@ -1,0 +1,15 @@
+@startuml
+title 城市组织中心：用户和应用绑定和解绑关系时序图
+
+actor 组织管理员用户 as user
+participant "用户应用关系管理" as userAppAdmin
+participant "日志管理" as LogAdmin
+
+autonumber
+user->userAppAdmin:用户绑定应用
+userAppAdmin->LogAdmin:记录用户绑定应用关系信息
+LogAdmin->user:返回用户应用关联关系信息
+user->userAppAdmin:用户和应用解绑
+userAppAdmin->LogAdmin:记录用户和应用关系解绑信息
+LogAdmin->user:返回解绑后的用户信息
+@enduml
