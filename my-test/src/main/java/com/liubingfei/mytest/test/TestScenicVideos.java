@@ -112,7 +112,7 @@ public class TestScenicVideos {
     }
 
     /**
-     * 3. 查询监控点列表，传参：监控点编号：regionIndexCodes=b075a535-7a00-41fe-a5e5-b70aa60952e8，获取indexCode。
+     * 3. 查询监控点列表，传参：监控点编号：regionIndexCodes=b075a535-7a00-41fe-a5e5-b70aa60952e8，获取：监控点唯一标识：indexCode：b99814f234854a84b28ef24f4ede794e
      * 一共查询到16个监控视频
      */
     @Test
@@ -136,10 +136,12 @@ public class TestScenicVideos {
     }
 
     /**
-     * 4. 查询视频流地址 传参：indexCode=b99814f234854a84b28ef24f4ede794e，获取url
-     * 1：46444053c14d4673a42a0d7db1b0d9c3
-     * 2：5654941ce1024030ad4e6ff7c54e6e1e
-     * 3：4e56190738314ea99d3e53cde1231d31
+     * 4. 查询视频流地址 传参：监控点唯一标识：indexCode=b99814f234854a84b28ef24f4ede794e，获取url
+     * 参数：
+     * 1：b99814f234854a84b28ef24f4ede794e
+     * 2：46444053c14d4673a42a0d7db1b0d9c3
+     * 3：5654941ce1024030ad4e6ff7c54e6e1e
+     * 4：4e56190738314ea99d3e53cde1231d31
      * ......
      */
     @Test
