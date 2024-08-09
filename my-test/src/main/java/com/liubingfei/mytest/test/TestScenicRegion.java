@@ -8,10 +8,6 @@ import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -21,7 +17,7 @@ import java.util.*;
  * @return
  */
 @Slf4j
-public class TestScenicVideos {
+public class TestScenicRegion {
 
     public String getVideos(String ip ,String port, String appKey, String secret, String methodStr, JSONObject jsonBody){
         /**
@@ -65,7 +61,7 @@ public class TestScenicVideos {
     }
 
     /**
-     * 1. 分页查询区域列表，获取parentIndexCode
+     * 分页查询区域列表
      */
     @Test
     public void callAndGetRegionList(){
@@ -87,7 +83,7 @@ public class TestScenicVideos {
     }
 
     /**
-     * 2. 查询区域信息：parentIndexCode：e63f5260-24c9-4cdb-824d-d2a3f590e432， regionName：樟江景区，获取indexCode=b075a535-7a00-41fe-a5e5-b70aa60952e8
+     * 查询区域信息：樟江景区
      */
     @Test
     public void callAndGetRegionDetail(){
@@ -111,75 +107,5 @@ public class TestScenicVideos {
 
     }
 
-    /**
-     * 3. 查询监控点列表，传参：监控点编号：regionIndexCodes=b075a535-7a00-41fe-a5e5-b70aa60952e8，获取indexCode。
-     * 一共查询到16个监控视频
-     */
-    @Test
-    public void callAndGetVideoList(){
-        String ip = "61.243.10.142";
-        String port = "442";
-        String appKey = "20893172";
-        String secret = "G77MGfQ9peH6HtiyLV4P";
-        String methodStr = "/api/resource/v2/camera/search";
-        JSONObject params = new JSONObject();
-        params.put("pageNo", 1);
-        params.put("pageSize", 1000);
-        params.put("regionIndexCodes", new ArrayList<>(Arrays.asList("b075a535-7a00-41fe-a5e5-b70aa60952e8")));
-        String result = getVideos(ip, port, appKey, secret, methodStr, params);
-        // 使用 fastjson 解析 JSON 字符串为 Map
-        JSONObject jsonObject = JSON.parseObject(result);
-        JSONObject dataObject = jsonObject.getJSONObject("data");
-        List<Map<String, Object>> videoList = JSON.parseObject(dataObject.getJSONArray("list").toJSONString(), new TypeReference<List<Map<String, Object>>>() {});
-        log.info("分页查询返回结果：" + videoList);
 
-    }
-
-    /**
-     * 4. 查询视频流地址 传参：indexCode=b99814f234854a84b28ef24f4ede794e，获取url
-     * 1：46444053c14d4673a42a0d7db1b0d9c3
-     * 2：5654941ce1024030ad4e6ff7c54e6e1e
-     * 3：4e56190738314ea99d3e53cde1231d31
-     * ......
-     */
-    @Test
-    public void callAndGetVideoDetail(){
-        String ip = "61.243.10.142";
-        String port = "442";
-        String appKey = "20893172";
-        String secret = "G77MGfQ9peH6HtiyLV4P";
-        String methodStr = "/api/video/v2/cameras/previewURLs";
-        JSONObject params = new JSONObject();
-        params.put("cameraIndexCode", "b99814f234854a84b28ef24f4ede794e");
-        params.put("streamform", "ps");
-        params.put("streamType", "0");
-        params.put("transmode", "1");
-        params.put("expand", "transcode=0");
-        params.put("protocol", "hls");
-        log.info("入参：" +params.toJSONString());
-        String result = getVideos(ip, port, appKey, secret, methodStr, params);
-        try{
-        // 将 JSON 字符串解析为 JSONObject
-        JSONObject jsonObject = JSON.parseObject(result);
-
-        // 获取 code 值
-        String code = jsonObject.getString("code");
-
-        // 判断 code 是否等于 "0"
-            if ("0".equals(code)) {
-                // 获取 data 对象
-                JSONObject dataObject = jsonObject.getJSONObject("data");
-
-                // 获取 url 值
-                String url = dataObject.getString("url");
-                log.info("URL: " + url);
-            } else {
-                // 获取错误信息
-                String msg = jsonObject.getString("msg");
-                throw new Exception("Error occurred: " + msg);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
